@@ -106,23 +106,31 @@ reg ROA GAP2 SIZE H10 CONT1
 eststo m2
 *回归，控制行业和年度；前面加xi：后面加i.ind i.Accper，程序会自动控制
 reg ROA GAP1 SIZE H10 CONT1 i.Ind i.year
+estadd local Time_fix "YES" 
+estadd local Ind_fix "YES"
 eststo m3
 reg ROA GAP2 SIZE H10 CONT1 i.Ind i.year
+estadd local Time_fix "YES" 
+estadd local Ind_fix "YES"
 eststo m4
 *加入固定效应，回归
 xtset Stkcd year // 申明面板数据
 xtreg ROA GAP1 SIZE H10 CONT1 i.Ind i.year, fe
-estadd local 时间固定效应 "YES" 
-estadd local 行业固定效应 "YES"
-estadd local 个体固定效应 "YES"
+estadd local Time_fix "YES" 
+estadd local Ind_fix "YES"
+estadd local Indiv_fix "YES"
+// estadd local 时间固定效应 "YES" 
+// estadd local 行业固定效应 "YES"
+// estadd local 个体固定效应 "YES"
 eststo m5
 xtreg ROA GAP2 SIZE H10 CONT1 i.Ind i.year, fe
-estadd local 时间固定效应 "YES" 
-estadd local 行业固定效应 "YES"
-estadd local 个体固定效应 "YES"
-// estadd local Time_fix "YES" 
-// estadd local Ind_fix "YES"
+// estadd local 时间固定效应 "YES" 
+// estadd local 行业固定效应 "YES"
+// estadd local 个体固定效应 "YES"
+estadd local Time_fix "YES" 
+estadd local Ind_fix "YES"
+estadd local Indiv_fix "YES"
 eststo m6
 
 //导出结果
-esttab m1 m2 m3 m4 m5 m6 using 回归结果.rtf, se drop(*.year *.Ind) s(N r2 时间固定效应 行业固定效应 个体固定效应) nogap title(Regression Results) star compress replace
+esttab m1 m2 m3 m4 m5 m6 using 回归结果.rtf, se drop(*.year *.Ind) s(N r2 Time_fix Ind_fix Indiv_fix) nogap title(Regression Results) star compress replace
